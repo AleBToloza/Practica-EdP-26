@@ -1,7 +1,7 @@
 {
   "development": {
     "database": "tienda",
-    "storage": "./data/data.sqlite",
+    "storage": "./src/data/data.sqlite",
     "dialect": "sqlite"
   },
   "test": {

@@ -1,5 +1,5 @@
 const express = require('express')
-const db = require('../models/index')
+const db = require('./models/index')
 const app = express()
 const PORT = 3000
 
