@@ -1,15 +1,15 @@
-const { Producto } = require('../models');
+const { Producto, Categoria } = require('../models');
 
 
 const agregarProducto = async (req, res) => {
-    const {nombre, precio, stock} = req.body;
+    const {nombre, precio, stock, categoriaId} = req.body;
 
     if(nombre == null || precio == null || stock == null) {
         return res.json({message: "Campos Incompletos"})
     }
 
     const nuevoProducto = await Producto.create({
-    nombre, precio, stock
+    nombre, precio, stock, categoriaId
     })
 
     res.json({
@@ -21,20 +21,32 @@ const agregarProducto = async (req, res) => {
 const obtenerProducto = async (req, res) => { 
     const {id} = req.params;
     const producto = await Producto.findByPk(id, {
-        attributes: ["nombre", "precio", "stock"]
+        attributes: ["nombre", "precio", "stock"],
+        include: {
+            model: Categoria,
+            as: "categoria",
+            attributes: ["nombre"],
+    },
     });
     if (!producto) { return res.json({message: "Producto no encontrado"})}
     res.json(producto);
 }
 
 const obtenerProductos = async (req, res) => {
-    const productos = await Producto.findAll()
+    const productos = await Producto.findAll({
+        attributes: ["id", "nombre", "precio", "stock"],
+        include: {
+            model: Categoria,
+            as: "categoria",
+            attributes: ["nombre"],
+        },
+    })
     res.json(productos);
 }
 
 const actualizarProducto = async (req, res) => {
     const {id} = req.params;
-    const { nombre, precio, stock } = req.body;
+    const { nombre, precio, stock, } = req.body;
 
     const productoPrevio = await Producto.findByPk(id, {
         attributes: ["nombre", "precio", "stock"]
