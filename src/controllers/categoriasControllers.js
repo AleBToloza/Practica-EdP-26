@@ -25,6 +25,8 @@ const crearCategoria = async (req, res) => {
   res.status(201).json({ message: "Categoria creada con exito!!!" });
 };
 
+"falta actualizar y quitar"
+
 module.exports = {
   obtenerCategorias,
   obtenerCategoria,
