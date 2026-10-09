@@ -5,10 +5,6 @@ const agregarProducto = async (req, res) => {
     try {
         const {nombre, precio, stock, categoriaId} = req.body;
 
-        if(!nombre || precio === undefined || stock === undefined) {
-            return res.status(400).json({message: "Campos Incompletos"});
-        }
-
         if (categoriaId !== undefined && categoriaId !== null) {
             const categoria = await Categoria.findByPk(categoriaId);
 
@@ -31,33 +27,8 @@ const agregarProducto = async (req, res) => {
     }
 };
 
-const obtenerProducto = async (req, res) => { 
-    try {
-        const {id} = req.params;
-        const producto = await Producto.findByPk(id, {
-            attributes: ["id", "nombre", "precio", "stock"],
-            include: [
-                {
-                model: Categoria,
-                as: "categoria",
-                attributes: ["nombre"],
-                },
-                {
-                model: Proveedor,
-                as: "proveedores",
-                attributes: ["nombre"],
-                through: {attributes:[]},
-                }
-            ]
-        });
-        if (!producto) {return res.status(404).json({message: "Producto no encontrado"})};
-        res.status(200).json(producto);
-    }
-    catch (error) {
-        console.error(error);
-        res.status(500).json({message: "Error al obtener el producto"});
-    }
-    
+const obtenerProducto = async (req, res) => {
+        res.status(200).json(req.producto);
 };
 
 const obtenerProductos = async (req, res) => {
